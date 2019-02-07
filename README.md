@@ -164,6 +164,20 @@ You can specify the guid to use the following way:
             <LI>Sword Art Online Extra Edition             [anidb2-10022]</LI>
             <LI>Gekijouban Sword Art Online: Ordinal Scale [anidb2-11681]</LI>
         </UL></TD> </TR>
+        <TR> <TD> anidb3     </TD> <TD> Absolute                </TD> <TD> TVDB                </TD> <TD>TVDB          </TD> <TD>Uses ScudLee mapping to map the AniDB series to TVDB entries BUT overrides the mapping for TVDB season 0 entries and puts them in AniDB relational order by appending to existing seasons or adding new seasons at after the last TVDB season
+        <UL><LI>Date a Live                          [anidb3-8808]  => TVDB s1   </LI>
+            <LI>Date a Live: Date to Date            [anidb3-9734]  => TVDB s0e1 -> s1e101</LI>
+            <LI>Date a Live II                       [anidb3-9935]  => TVDB s2   </LI>
+            <LI>Date a Live II: Kurumi Star Festival [anidb3-10568] => TVDB s0e2 -> s2e101</LI>
+            <LI>TBD (prep entry in TVDB)                            => TVDB s3   </LI>
+        </UL></TD> </TR>
+        <TR> <TD> anidb4     </TD> <TD> Absolute                </TD> <TD> TVDB                </TD> <TD>TVDB          </TD> <TD>Uses ScudLee mapping to map the AniDB series to TVDB entries BUT overrides the mapping for TVDB seasons entries and puts them in AniDB relational order by inserting new seasons and pushing later TVDB seasons back
+        <UL><LI>Date a Live                          [anidb3-8808]  => TVDB s1   -> s1</LI>
+            <LI>Date a Live: Date to Date            [anidb3-9734]  => TVDB s0e1 -> s2</LI>
+            <LI>Date a Live II                       [anidb3-9935]  => TVDB s2   -> s3</LI>
+            <LI>Date a Live II: Kurumi Star Festival [anidb3-10568] => TVDB s0e2 -> s4</LI>
+            <LI>TBD (prep entry in TVDB)                            => TVDB s3   -> s5</LI>
+        </UL></TD> </TR>
         <TR> <TD> tvdb     </TD> <TD> Season                   </TD> <TD> TVDB                </TD> <TD>TVDB              </TD> <TD>Force the tvdbid, series will follow tvdb episode numbering convention including specials
         <UL>
           <LI>Sword Art Online [tvdb-259640]</LI>
@@ -181,7 +195,7 @@ You can specify the guid to use the following way:
         <TR> <TD> tvdb4     </TD> <TD> Absolute, random season </TD> <TD> Abs/Custom/Arc db   </TD> <TD>Absolute          </TD> <TD>For absolute numbering episodes displayed using series arc as season for long running series with arcs like Dragon Ball Kai, or separated anidb series considered as half seasons by thetvdb (like 'Seraph of the end' numbered 1-24 splitted into 2 seasons). Will take the arc definitions from tvdb4.mapping.xml and posters from tvdb4.posters.xml unless the absolute numbered episodes were placed in season folders already
         <UL><LI>One Piece [tvdb4-81797] </LI></UL>        
         </TD> </TR>
-        <TR> <TD> tvdb5     </TD> <TD> TVDB                    </TD> <TD>Absolute             </TD> <TD>Absolute          </TD> <TD>Chronological order (specifically for Star Wars: The Clone Wars) will remove seasons present and use the chronological order to re-sort the episodes. First ep is s02e15 from memory...
+        <TR> <TD> tvdb5     </TD> <TD> TVDB                    </TD> <TD>Absolute             </TD> <TD>Absolute          </TD> <TD>TheTVDB Absolute numbering order (specifically for Star Wars: The Clone Wars) will remove seasons present and use the 'absolute_number' field order to re-sort the episodes. First ep is s02e15 from memory...
 <UL><LI>Star Wars: The Clone Wars [tvdb5-83268] </LI></UL>
 </TD> </TR>
         <TR> <TD> youtube     </TD> <TD> YouTube                    </TD> <TD> None             </TD> <TD> None          </TD> <TD> Put Playlist id (PL... 2+16/32 chars long) on series folder or season folder to have the youtube files downloaded with youtube-dl numbered as per the playlist order</LI></UL>
@@ -191,16 +205,19 @@ You can specify the guid to use the following way:
 
 ##### Advanced modes
 For when you have episodes of a series in SEPARATE parent folders but want them to show as a single series in Plex:
-- " [anidb2-xxxxx]" will find the season & eposide offset defiend in the ScudLee file and add into Plex with it's corresponding TVDB series/season/episode numbers
+- " [anidb2-xxxxx]" will find the season & eposide offset defined in the ScudLee file and add into Plex with it's corresponding TVDB series/season/episode numbers
+- " [anidb3-xxxxx]" will find the season & eposide offset defined in the ScudLee file and add into Plex ?????
+- " [anidb4-xxxxx]" will find the season & eposide offset defined in the ScudLee file and add into Plex ????
 - " [tvdb/2/3/4-xxxxx-sY]" episode numbers found in the files are left alone and added to season Y
 - " [tvdb/2/3/4-xxxxx-eZ]" episode numbers found in the files are adjusted (epNum+Z-1)
 - " [tvdb/2/3/4-xxxxx-sYeZ]" episode numbers found in the files are adjusted (epNum+Z-1) and added to season Y, Z is the offset for the episodes in season Y for when we want it to start mid tvdb season
 - **!!IMPORTANT NOTES!!**
   - When defining your modes on your folders:
     - If you don't use the same mode or compatible modes for all separate folders for a series, you will run into issues.
-      - "anidb2", "tvdb" & "tvdb2" will work together
+      - "anidb2", "anidb3", "tvdb" & "tvdb2" will work together
     - You might have to manually merge Plex series together if "anidb2"/"tvdb2" or "tvdb"/"tvdb2" are both used.
-    - "anidb2"/"tvdb" should automatically merge (but Plex is not perfect so you still might have to manually merge)
+    - "anidb2"/"anidb3"/"tvdb" should automatically merge (but Plex is not perfect so you still might have to manually merge)
+    - "anidb4" will not work correctly with any other modes so all folders of a series will have to have this mode
     - "tvdb3" will not work correctly with any other modes so all folders of a series will have to have this mode
     - "tvdb4" will not work correctly with any other modes so all folders of a series will have to have this mode
 
