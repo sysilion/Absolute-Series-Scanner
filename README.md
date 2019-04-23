@@ -10,7 +10,7 @@ If a file is not showing in plex or showing at the wrong season and/or episode n
 
 If you post anything on the scanner github or thread for any issue like poster missing/wrong, episode thumbnail/screenshot/title/summary missing/wrong, then you clearly haven't read this and need to pay the RTFM tax by donating (or you just find this the best anime scanner and/or agent, much apreciated average is 5 euros). Also applies if you want assistance but didn't follow troubleshooting steps or include logs...
 
-## Plex Agent responsabilities
+## Plex Agent responsibilities
 A Plex metadata agent will:
 - Search the metadata source using the Series name given by the scanner and assign the series a guid, a unique identifier used to download the metadataa informations
 - Update all the metadata information ((Series Title, summary year, episode title, summary, posters, fanart, tags, ...) for series and files showing in Plex thanks to the scanner. 
@@ -39,6 +39,9 @@ Any information missing or wrong inthere in Plex is an Agent issue, refer to the
 - Use sagas as seasons keeping absolute numbering with TVDB4 and it create even the seasons for you from a database if not specified
 - Versatile file format support. if a logical numbering format isn't supported let me know (no episode number in brackets or parenthesis though, that's moronic)
 - put per-series logs ('xxx.filelist.log' and 'xxx.scanner.log' in /Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/Logs).
+
+## Requirements
+-  Library libxslt (XML stylesheet transformation library) installed
 
 ## File Naming Conventions / Numbering
 This scanner supports absolute and season numbering, but here are two references for guidelines
@@ -205,9 +208,9 @@ You can specify the guid to use the following way:
 
 ##### Advanced modes
 For when you have episodes of a series in SEPARATE parent folders but want them to show as a single series in Plex:
-- " [anidb2-xxxxx]" will find the season & eposide offset defined in the ScudLee file and add into Plex with it's corresponding TVDB series/season/episode numbers
-- " [anidb3-xxxxx]" will find the season & eposide offset defined in the ScudLee file and add into Plex ?????
-- " [anidb4-xxxxx]" will find the season & eposide offset defined in the ScudLee file and add into Plex ????
+- " [anidb2-xxxxx]" will find the season & episode offset defined in the ScudLee file and add into Plex with it's corresponding TVDB series/season/episode numbers
+- " [anidb3-xxxxx]" will find the season & episode offset defined in the ScudLee file and add into Plex ?????
+- " [anidb4-xxxxx]" will find the season & episode offset defined in the ScudLee file and add into Plex ????
 - " [tvdb/2/3/4-xxxxx-sY]" episode numbers found in the files are left alone and added to season Y
 - " [tvdb/2/3/4-xxxxx-eZ]" episode numbers found in the files are adjusted (epNum+Z-1)
 - " [tvdb/2/3/4-xxxxx-sYeZ]" episode numbers found in the files are adjusted (epNum+Z-1) and added to season Y, Z is the offset for the episodes in season Y for when we want it to start mid tvdb season
@@ -309,7 +312,7 @@ Linux install script example
 mkdir -p '/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Scanners/Series'
 wget -O '/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Scanners/Series/Absolute Series Scanner.py' https://raw.githubusercontent.com/ZeroQI/Absolute-Series-Scanner/master/Scanners/Series/Absolute%20Series%20Scanner.py
 chown -R plex:plex '/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Scanners'
-chmod 775 -R '/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Scanners'
+chmod -R 775 '/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Scanners'
 </CODE></PRE>
 
 ## Troubleshooting:
@@ -398,6 +401,25 @@ Rights issues on Windows 2008 R2, solved by changing rights for:
 On linux (and Mac OS-X), permissions issues could prevent the scanner execution, but after creating folder and setting proper permissions, all was working. Exemples solved by creating folders and setting proper permissions:
 - Mac OS-X" the logs don't go in default logs folder but a user folder: '/Users/renaldobryan/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner (custom ASS).log'. 
 - "Feral Hosting Seedbox" error "IOError: (2, 'No such file or directory', '/media/sdt1/jusjtk91/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner (custom ASS).log')".
+
+Using the latest binhex plexpass docker returns: https://github.com/binhex/arch-plex
+<PRE><CODE>
+Error in Python: Looking up module:
+Traceback (most recent call last):
+File "/config/Plex Media Server/Scanners/Series/Absolute Series Scanner.py", line 20, in 
+from lxml import etree # fromstring
+ImportError: libexslt.so.0: cannot open shared object file: No such file or directory
+</CODE></PRE>
+
+Using the latest binhex plexstandard docker returns: https://github.com/binhex/arch-plex
+<PRE><CODE>
+Error in Python: Looking up module:
+Traceback (most recent call last):
+File "/config/Plex Media Server/Scanners/Series/Absolute Series Scanner.py", line 20, in 
+from lxml import etree # fromstring
+ImportError: libexslt.so.0: cannot open shared object file: No such file or directory
+</CODE></PRE>
+Solution: Opening the dockers terminal and running "pacman -S libxslt --noconfirm" then rebooting the docker fixes the issue.
 
 ### Task list
 - [ ] Support Media stubs .Disc files ? http://kodi.wiki/view/Media_stubs
